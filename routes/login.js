@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-// var User = mongoose.model('User');
 var User = require("../models/user");
 
 var cleanString = require('../helpers/cleanString');
