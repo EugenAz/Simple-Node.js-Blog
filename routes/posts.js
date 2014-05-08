@@ -1,4 +1,5 @@
 var loggedIn = require('../middleware/loggedIn');
+var BlogPost = require("../models/blogPost");
 
 module.exports = function(app) {
   // create
