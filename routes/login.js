@@ -67,6 +67,9 @@ module.exports = function(app) {
       return invalid();
     }
 
+    // user friendly
+    email = email.toLowerCase();
+
     // query mongodb
     User.findById(email, function (err, user) {
       if (err) return next(err);
