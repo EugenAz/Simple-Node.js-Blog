@@ -60,7 +60,30 @@ module.exports = function(app) {
   });
 
   app.post('/login', function(req, res, next) {
+    // validate input
+    var email = cleanString(req.param('email'));
+    var pass = cleanString(req.param('pass'));
+    if (!(email && pass)) {
+      return invalid();
+    }
 
+    // query mongodb
+    User.findById(email, function (err, user) {
+      if (err) return next(err);
+
+      if (!user) {
+        return invalid();
+      }
+
+      // check pass
+      if (user.hash != hash(pass, user.salt)) {
+        return invalid();
+      }
+
+      req.session.isLoggedIn = true;
+      req.session.user = email;
+      res.redirect('/');
+    });
   });
 
 }
