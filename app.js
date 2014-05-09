@@ -3,7 +3,7 @@ var express = require("express");
 var configure = require("./middleware");
 var routes = require("./routes");
 
-mongoose.connect('mongodb://localhost', function(err) {
+mongoose.connect('mongodb://localhost:27017/simple_blog', function(err) {
   if (err) throw err;
   console.log('connected to mongodb');
 
@@ -14,4 +14,4 @@ mongoose.connect('mongodb://localhost', function(err) {
   app.listen(3000, function() {
   	console.log('http://localhost:3000');
   });
-})
+});
