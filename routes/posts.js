@@ -21,4 +21,27 @@ module.exports = function(app) {
       res.redirect('/posts/' + post.id);
     });
   });
+
+  // read
+  app.get("/posts/:id", function(req, res, next) {
+    var query = BlogPost.findById(req.param('id'));
+
+    query.populate('author');
+
+    query.exec(function (err, post) {
+
+      console.log("post", post);
+      console.log("post.author", post.author);
+
+      if (err) return next(err);
+
+      if (!post) return next(); // 404
+
+      res.render('post/view.jade', { post: post });
+    });
+  });
+
+  // update
 }
+
+
