@@ -1,17 +1,21 @@
 var mongoose = require("mongoose");
 var express = require("express");
-var configure = require("./middleware");
-var routes = require("./routes");
 
-mongoose.connect('mongodb://localhost:27017/simple_blog', function(err) {
+// add mongoose query and promise support to express
+require('express-mongoose');
+
+var routes = require("./routes");
+var middleware = require("./middleware");
+
+mongoose.set('debug', true);
+mongoose.connect('mongodb://localhost/simple_blog', function(err) {
   if (err) throw err;
-  console.log('connected to mongodb');
 
   var app = express();
-  configure(app);
+  middleware(app);
   routes(app);
 
   app.listen(3000, function() {
-  	console.log('http://localhost:3000');
+  	console.log('listening on http://localhost:3000');
   });
 });
