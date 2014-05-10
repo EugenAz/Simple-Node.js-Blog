@@ -11,3 +11,19 @@ block content
     a(href="/posts/edit/#{post._id}") Edit
     span &nbsp;/&nbsp;
     a(href="/posts/remove/#{post._id}") Delete
+
+  .comments
+    if comments
+      ul
+        each comment in comments
+          li
+            p.text= comment.text
+            p.author= comment.author
+    else
+      p
+        | No comments yet
+    if session.isLoggedIn
+      form(method='post', action="/posts/comment" + post.id)
+        textarea(name='text')
+        br
+        input(type='submit', value='Save')
