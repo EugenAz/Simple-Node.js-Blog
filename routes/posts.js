@@ -2,6 +2,10 @@ var loggedIn = require('../middleware/loggedIn');
 var BlogPost = require("../models/blogPost");
 
 module.exports = function(app) {
+  app.get("/posts", function(req, res) {
+    res.redirect("/");
+  });
+
   // create
   app.get("/posts/create", loggedIn, function(req, res) {
     res.render('post/create.jade');
@@ -29,19 +33,27 @@ module.exports = function(app) {
     query.populate('author');
 
     query.exec(function (err, post) {
-
-      console.log("post", post);
-      console.log("post.author", post.author);
-
       if (err) return next(err);
-
       if (!post) return next(); // 404
 
       res.render('post/view.jade', { post: post });
     });
   });
 
+  // edit
+  app.get("/posts/edit/:id", loggedIn, function(req, res, next) {
+    res.render('post/create.jade', {
+      post: BlogPost.findById(req.param('id'))
+    });
+  });
+
   // update
+  app.post("/posts/edit/:id", loggedIn, function(req, res, next) {
+    BlogPost.edit(req, function(err) {
+      if (err) return next(err);
+      res.redirect("/posts/" + req.param('id'));
+    })
+  });
 
   // delete
   app.get("/posts/remove/:id", loggedIn, function(req, res, next) {
