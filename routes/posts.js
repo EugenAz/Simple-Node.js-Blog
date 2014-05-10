@@ -42,6 +42,27 @@ module.exports = function(app) {
   });
 
   // update
+
+  // delete
+  app.get("/posts/remove/:id", loggedIn, function(req, res, next) {
+    var id = req.param('id');
+
+    BlogPost.findOne({ _id: id }, function (err, post) {
+      if (err) return next(err);
+
+      // validate logged in user authored this post
+      if (post.author != req.session.user) {
+        return res.send(403);
+      }
+
+      post.remove(function(err) {
+        if (err) return next(err);
+
+        // TODO display a confirmation msg to user
+        res.redirect('/');
+      });
+    });
+  })
 }
 
 
