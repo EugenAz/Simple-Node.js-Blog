@@ -9,4 +9,8 @@ var schema = mongoose.Schema({
   created: { type: Date, default: Date.now }
 });
 
+schema.virtual('fullname').get(function() {
+  return this.name.first + ' ' + this.name.last;
+});
+
 module.exports = mongoose.model('User', schema);
