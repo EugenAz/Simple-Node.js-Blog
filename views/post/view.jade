@@ -4,4 +4,10 @@ block content
   h2= post.title
   p= post.body
   span= post.created.toGMTString()
-  p by #{post.author._id}
+  p by #{post.author.fullname}
+
+  br
+  p
+    a(href="/posts/edit/#{post._id}") Edit
+    span &nbsp;/&nbsp;
+    a(href="/posts/remove/#{post._id}") Delete
